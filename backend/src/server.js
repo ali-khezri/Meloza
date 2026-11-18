@@ -3,6 +3,7 @@ import express from "express";
 import dotenv from "dotenv";
 
 import { connectDB } from "./lib/db.js";
+import { clerkMiddleware } from "@clerk/express";
 
 import userRoutes from "./routes/user.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
@@ -19,6 +20,8 @@ const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 
+app.use(clerkMiddleware());
+
 app.use("/api/users", userRoutes);
 
 app.use("/api/admin", adminRoutes);
@@ -31,7 +34,21 @@ app.use("/api/albums", albumRoutes);
 
 app.use("/api/stats", statRoutes);
 
-app.listen(PORT, () => {
-  console.log("Server is running on port: " + PORT);
-  connectDB();
-});
+// app.listen(PORT, () => {
+//   console.log("Server is running on port: " + PORT);
+//   connectDB();
+// });
+
+async function startServer() {
+  try {
+    await connectDB();
+
+    app.listen(PORT, () => {
+      console.log("Server is running on port: " + PORT);
+    });
+  } catch (error) {
+    process.exit(1);
+  }
+}
+
+startServer();
