@@ -21,7 +21,7 @@ export async function getStats(req, res, next) {
       totalSongs,
       totalAlbums,
       totalUsers,
-      totalArtists: uniqueArtists[0]?.count || 0,
+      totalArtists: uniqueArtists[0]?.count ?? 0,
     });
   } catch (error) {
     next(error);

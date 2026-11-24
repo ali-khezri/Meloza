@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 
 import path from "path";
 
+import cors from "cors";
+
 import { connectDB } from "./lib/db.js";
 
 import { clerkMiddleware } from "@clerk/express";
@@ -24,6 +26,13 @@ const __dirname = path.resolve();
 const app = express();
 
 const PORT = process.env.PORT || 5000;
+
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  }),
+);
 
 app.use(express.json());
 
